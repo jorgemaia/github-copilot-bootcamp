@@ -29,7 +29,22 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchContacts() {
     try {
         updateStatus('Fetching contacts...');
-        
+
+        // MOCK DATA: Remove this block if you connect to a real backend
+        const mockContacts = [
+            { name: 'Alice Smith', email: 'alice@example.com', telefone: '123-456-7890' },
+            { name: 'Bob Johnson', email: 'bob@example.com', telefone: '987-654-3210' },
+            { name: 'Carol Lee', email: 'carol@example.com', telefone: '555-555-5555' }
+        ];
+        await new Promise(r => setTimeout(r, 500)); // Simulate network delay
+        displayContacts(mockContacts);
+        updateLastUpdated();
+        updateStatus('Connected (mock)');
+        return;
+        // END MOCK DATA
+
+        /*
+        // Uncomment this block if you have a real backend
         const url = `${API_CONFIG.baseUrl}${API_CONFIG.endpoint}`;
         const response = await fetch(url, {
             method: 'GET',
@@ -37,16 +52,14 @@ async function fetchContacts() {
                 'Content-Type': 'application/json',
             }
         });
-        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
         const contacts = await response.json();
         displayContacts(contacts);
         updateLastUpdated();
         updateStatus('Connected');
-        
+        */
     } catch (error) {
         console.error('Error fetching contacts:', error);
         displayError(error.message);
